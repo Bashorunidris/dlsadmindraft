@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - DLS Draft</title>
+    <style>
+        :root {
+            --primary-dark: #0a0e27;
+            --secondary-dark: #151930;
+            --accent-gold: #ffd700;
+            --accent-green: #00ff88;
+            --text-white: #ffffff;
+            --text-gray: #b8b8b8;
+            --hover-glow: rgba(255, 215, 0, 0.4);
+            --card-bg: rgba(21, 25, 48, 0.85);
+            --error-red: #ff6b6b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
+            color: var(--text-white);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+            margin: auto;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 25px;
+            padding: 50px 40px;
+            backdrop-filter: blur(20px);
+            animation: slideUp 0.6s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .app-logo-large {
+            font-size: 3.5em;
+            font-weight: 900;
+            color: var(--accent-gold);
+            text-shadow: 0 0 20px var(--hover-glow);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .app-name {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--text-white);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .app-subtitle {
+            font-size: 0.9em;
+            color: var(--text-gray);
+            font-weight: 400;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-label {
+            font-size: 0.95em;
+            font-weight: 600;
+            color: var(--text-white);
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            padding: 15px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 12px;
+            color: var(--text-white);
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 20px var(--hover-glow);
+        }
+
+        .login-btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, var(--accent-gold), #ffed4e);
+            border: none;
+            border-radius: 12px;
+            color: var(--primary-dark);
+            font-size: 1.05em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+            box-shadow: 0 10px 30px var(--hover-glow);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px var(--hover-glow);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            padding: 12px 15px;
+            background: rgba(255, 107, 107, 0.15);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 10px;
+            color: var(--error-red);
+            font-size: 0.9em;
+            font-weight: 500;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            padding: 12px 15px;
+            background: rgba(0, 255, 136, 0.15);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            color: var(--accent-green);
+            font-size: 0.9em;
+            font-weight: 500;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-text {
+            text-align: center;
+            font-size: 0.85em;
+            color: var(--text-gray);
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+
+        .divider {
+            height: 1px;
+            background: rgba(255, 215, 0, 0.1);
+            margin: 15px 0;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top-color: var(--accent-gold);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .demo-text {
+            font-size: 0.8em;
+            color: var(--text-gray);
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px dashed rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 35px 25px;
+            }
+
+            .app-logo-large {
+                font-size: 2.8em;
+            }
+
+            .form-input {
+                padding: 13px 15px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo-section">
+                <div class="app-logo-large">🏆</div>
+                <div class="app-name">DLS DRAFT</div>
+                <div class="app-subtitle">Admin Control Panel</div>
+            </div>
+
+            <form class="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input
+                        type="email"
+                        id="emailInput"
+                        class="form-input"
+                        placeholder="Enter your email"
+                        required
+                        autocomplete="email"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input
+                        type="password"
+                        id="passwordInput"
+                        class="form-input"
+                        placeholder="Enter your password"
+                        required
+                        autocomplete="current-password"
+                    />
+                </div>
+
+                <div id="errorMessage" class="error-message"></div>
+                <div id="successMessage" class="success-message"></div>
+
+                <button type="submit" class="login-btn" id="loginBtn">
+                    SIGN IN
+                </button>
+            </form>
+
+            <div class="info-text">
+                ✅ Admin access only<br>
+                🔐 Secure login required
+            </div>
+
+            <div class="demo-text">
+                <strong>Demo Credentials:</strong><br>
+                Email: bashorunidris01@gmail.com<br>
+                Password: 1234ABCD<br>
+                <br>
+                OR<br>
+                <br>
+                Email: bashorunidris18@gmail.com<br>
+                Password: 1234ABCD
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Valid admin credentials
+        const validCredentials = [
+            { email: 'bashorunidris01@gmail.com', password: '1234ABCD' },
+            { email: 'bashorunidris18@gmail.com', password: '1234ABCD' }
+        ];
+
+        function handleLogin(event) {
+            event.preventDefault();
+
+            const emailInput = document.getElementById('emailInput');
+            const passwordInput = document.getElementById('passwordInput');
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+            const loginBtn = document.getElementById('loginBtn');
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            // Clear previous messages
+            errorMsg.classList.remove('show');
+            successMsg.classList.remove('show');
+
+            // Validate inputs
+            if (!email || !password) {
+                showError('Please enter both email and password', errorMsg);
+                return;
+            }
+
+            // Disable button and show loading
+            loginBtn.disabled = true;
+            const originalText = loginBtn.textContent;
+            loginBtn.innerHTML = '<span class="loading"></span>Verifying...';
+
+            // Simulate API delay for security feel
+            setTimeout(() => {
+                // Check credentials
+                const isValid = validCredentials.some(cred =>
+                    cred.email.toLowerCase() === email.toLowerCase() &&
+                    cred.password === password
+                );
+
+                if (isValid) {
+                    // Success
+                    showSuccess('Login successful! Redirecting...', successMsg);
+                    
+                    // Store admin session
+                    sessionStorage.setItem('adminLoggedIn', 'true');
+                    sessionStorage.setItem('adminEmail', email);
+                    sessionStorage.setItem('loginTime', new Date().toISOString());
+
+                    // Redirect to admin dashboard
+                    setTimeout(() => {
+                        window.location.href = 'admin_dashboard.html';
+                    }, 1500);
+                } else {
+                    // Invalid credentials
+                    showError('Invalid email or password. Please try again.', errorMsg);
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = originalText;
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            }, 800);
+        }
+
+        function showError(message, element) {
+            element.textContent = '❌ ' + message;
+            element.classList.add('show');
+        }
+
+        function showSuccess(message, element) {
+            element.textContent = '✅ ' + message;
+            element.classList.add('show');
+        }
+
+        // Check if user is already logged in
+        window.addEventListener('load', () => {
+            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+                window.location.href = 'admin_dashboard.html';
+            }
+
+            // Auto-focus email on load
+            document.getElementById('emailInput').focus();
+        });
+
+        // Allow Enter key to submit
+        document.getElementById('emailInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('passwordInput').focus();
+            }
+        });
+
+        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.querySelector('.login-form').dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+
+</html>
