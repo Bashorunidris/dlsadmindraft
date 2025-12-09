@@ -2046,6 +2046,10 @@
                 <span class="action-icon">🎥</span>
                 <span>View Livestreams</span>
             </button>
+            <button class="action-btn" onclick="openRegisterPlayersModal()">
+                <span class="action-icon">📝</span>
+                <span>Register Players</span>
+            </button>
         </div>
 
         <!-- PENDING WITHDRAWALS SECTION -->
@@ -3748,10 +3752,10 @@
                         <div style="padding: 20px;">
                             <!-- Controls -->
                             <div style="display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap;">
-                                <button onclick="openAddTeamsToStandingsModal()"
+                                <button onclick="openAddClubModal()"
                                     style="padding: 12px 20px; background: rgba(0, 255, 136, 0.2); border: 1px solid rgba(0, 255, 136, 0.4); color: var(--accent-green); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;"
                                     onmouseover="this.style.background='rgba(0, 255, 136, 0.3)'"
-                                    onmouseout="this.style.background='rgba(0, 255, 136, 0.2)'">➕ Add Teams</button>
+                                    onmouseout="this.style.background='rgba(0, 255, 136, 0.2)'">➕ Add Club</button>
                                 <button onclick="refreshTournamentStandings()"
                                     style="padding: 12px 20px; background: rgba(255, 215, 0, 0.15); border: 1px solid rgba(255, 215, 0, 0.3); color: var(--accent-gold); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;"
                                     onmouseover="this.style.background='rgba(255, 215, 0, 0.25)'"
@@ -3798,6 +3802,9 @@
                                             <th
                                                 style="padding: 12px; text-align: center; color: var(--accent-gold); font-weight: 700;">
                                                 PTS</th>
+                                            <th
+                                                style="padding: 12px; text-align: center; color: var(--accent-gold); font-weight: 700;">
+                                                ACTIONS</th>
                                         </tr>
                                     </thead>
                                     <tbody id="standingsTableBody">
@@ -4318,6 +4325,378 @@
                         <div class="spinner" style="margin-top: 15px; display: inline-block;"></div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REGISTER PLAYERS MODAL -->
+    <div id="registerPlayersModal"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 5000; display: none; flex-direction: column;">
+        <div
+            style="background: rgba(10, 14, 39, 0.95); border-bottom: 2px solid rgba(255, 215, 0, 0.3); padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="color: var(--accent-gold); margin: 0; font-size: 1.8em;">📝 Register Players</h2>
+            <button onclick="closeRegisterPlayersModal()"
+                style="background: none; border: none; font-size: 2em; color: var(--text-gray); cursor: pointer; padding: 0; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">×</button>
+        </div>
+
+        <div style="flex: 1; overflow-y: auto; padding: 40px;">
+            <!-- Tabs -->
+            <div
+                style="display: flex; gap: 15px; margin-bottom: 30px; border-bottom: 2px solid rgba(255,215,0,0.2); padding-bottom: 15px;">
+                <button class="register-tab active" onclick="switchRegisterTab('create')"
+                    style="padding: 12px 25px; background: transparent; border: none; color: var(--accent-gold); cursor: pointer; font-weight: 600; font-size: 1em; border-bottom: 3px solid var(--accent-gold);">➕
+                    Create Register</button>
+                <button class="register-tab" onclick="switchRegisterTab('view')"
+                    style="padding: 12px 25px; background: transparent; border: none; color: var(--text-gray); cursor: pointer; font-weight: 600; font-size: 1em;">📋
+                    View Registers</button>
+            </div>
+
+            <!-- Create Register Tab -->
+            <div id="registerCreateTab" class="register-tab-content" style="display: block;">
+                <div
+                    style="background: var(--card-bg); border: 2px solid rgba(255, 215, 0, 0.2); border-radius: 20px; padding: 30px; max-width: 700px;">
+                    <h3 style="color: var(--accent-gold); margin-bottom: 25px; font-size: 1.3em;">Create New Register
+                    </h3>
+
+                    <!-- Register Name -->
+                    <div style="margin-bottom: 20px;">
+                        <label
+                            style="display: block; color: var(--text-gray); font-weight: 600; margin-bottom: 8px;">Register
+                            Name</label>
+                        <input id="registerName" type="text" placeholder="e.g., Championship 2025, Premier League"
+                            style="width: 100%; padding: 12px 15px; background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.3); border-radius: 8px; color: var(--text-white); font-size: 1em;">
+                    </div>
+
+                    <!-- Number of Players Allowed -->
+                    <div style="margin-bottom: 20px;">
+                        <label
+                            style="display: block; color: var(--text-gray); font-weight: 600; margin-bottom: 8px;">Max
+                            Players Allowed</label>
+                        <input id="maxPlayersAllowed" type="number" placeholder="e.g., 20" min="1"
+                            style="width: 100%; padding: 12px 15px; background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.3); border-radius: 8px; color: var(--text-white); font-size: 1em;">
+                    </div>
+
+                    <!-- Register Type Options -->
+                    <div style="margin-bottom: 20px;">
+                        <label
+                            style="display: block; color: var(--text-gray); font-weight: 600; margin-bottom: 12px;">Register
+                            Type</label>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <label
+                                style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-white); padding: 10px; background: rgba(0,255,136,0.08); border-radius: 6px; border: 1px solid rgba(0,255,136,0.3);">
+                                <input type="radio" name="registerType" value="free" checked
+                                    onchange="updateRegisterTypeDisplay()">
+                                <span>✅ <strong>Free</strong> - No payment required</span>
+                            </label>
+                            <label
+                                style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-white); padding: 10px; background: rgba(255,215,0,0.08); border-radius: 6px; border: 1px solid rgba(255,215,0,0.3);">
+                                <input type="radio" name="registerType" value="paid"
+                                    onchange="updateRegisterTypeDisplay()">
+                                <span>💳 <strong>Paid</strong> - Players pay to register</span>
+                            </label>
+                            <label
+                                style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-white); padding: 10px; background: rgba(0,212,255,0.08); border-radius: 6px; border: 1px solid rgba(0,212,255,0.3);">
+                                <input type="radio" name="registerType" value="code"
+                                    onchange="updateRegisterTypeDisplay()">
+                                <span>🔐 <strong>Register Code</strong> - Requires unique registration code</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Amount Field (for Paid type) -->
+                    <div id="amountSection" style="margin-bottom: 20px; display: none;">
+                        <label
+                            style="display: block; color: var(--text-gray); font-weight: 600; margin-bottom: 8px;">Registration
+                            Amount (₦)</label>
+                        <input id="registrationAmount" type="number" placeholder="e.g., 500" min="0" step="50"
+                            style="width: 100%; padding: 12px 15px; background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.3); border-radius: 8px; color: var(--text-white); font-size: 1em;">
+                    </div>
+
+                    <!-- Code Field (for Code type) -->
+                    <div id="codeSection" style="margin-bottom: 20px; display: none;">
+                        <label style="display: block; color: var(--text-gray); font-weight: 600; margin-bottom: 8px;">🔐
+                            Registration Code</label>
+                        <input id="registrationCode" type="text" placeholder="Enter unique registration code"
+                            style="width: 100%; padding: 12px 15px; background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.3); border-radius: 8px; color: var(--text-white); font-size: 1em;">
+                    </div>
+
+                    <!-- Time to Start -->
+                    <div style="margin-bottom: 20px;">
+                        <label
+                            style="display: block; color: var(--text-gray); font-weight: 600; margin-bottom: 8px;">Start
+                            Time</label>
+                        <input id="startTime" type="datetime-local"
+                            style="width: 100%; padding: 12px 15px; background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.3); border-radius: 8px; color: var(--text-white); font-size: 1em;">
+                    </div>
+
+                    <!-- Time to End -->
+                    <div style="margin-bottom: 20px;">
+                        <label
+                            style="display: block; color: var(--text-gray); font-weight: 600; margin-bottom: 8px;">End
+                            Time</label>
+                        <input id="endTime" type="datetime-local"
+                            style="width: 100%; padding: 12px 15px; background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.3); border-radius: 8px; color: var(--text-white); font-size: 1em;">
+                    </div>
+
+                    <!-- User Info Needed Checkboxes -->
+                    <div style="margin-bottom: 25px;">
+                        <label
+                            style="display: block; color: var(--text-gray); font-weight: 600; margin-bottom: 12px;">User
+                            Information Required</label>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <label
+                                style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-white);">
+                                <input type="checkbox" id="needName" checked>
+                                <span>Full Name</span>
+                            </label>
+                            <label
+                                style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-white);">
+                                <input type="checkbox" id="needTeamName" checked>
+                                <span>DLS Team Name</span>
+                            </label>
+                            <label
+                                style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-white);">
+                                <input type="checkbox" id="needPlayerList">
+                                <span>Player List</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Create Button -->
+                    <button onclick="createRegister()"
+                        style="width: 100%; padding: 15px; background: rgba(0, 255, 136, 0.2); border: 1px solid rgba(0, 255, 136, 0.4); color: var(--accent-green); border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1em; transition: all 0.3s ease;">✅
+                        Create Register</button>
+
+                    <div id="createRegisterMessage" style="margin-top: 15px; text-align: center;"></div>
+                </div>
+            </div>
+
+            <!-- View Registers Tab -->
+            <div id="registerViewTab" class="register-tab-content" style="display: none;">
+                <div style="display: grid; gap: 20px;" id="registersGrid">
+                    <div style="text-align: center; color: var(--text-gray); padding: 40px 20px;">Loading registers...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD CLUB WITH PLAYERS MODAL -->
+    <div id="addClubModal"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 5000; display: none; flex-direction: column;">
+        <div
+            style="background: rgba(10, 14, 39, 0.95); border-bottom: 2px solid rgba(255, 215, 0, 0.3); padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="color: var(--accent-gold); margin: 0; font-size: 1.8em;">⚽ Add Club to Tournament</h2>
+            <button onclick="closeAddClubModal()"
+                style="background: none; border: none; font-size: 2em; color: var(--text-gray); cursor: pointer; padding: 0; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">×</button>
+        </div>
+
+        <div style="flex: 1; overflow-y: auto; padding: 40px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 1000px;">
+
+                <!-- LEFT SIDE: CLUB CREATION -->
+                <div
+                    style="background: var(--card-bg); border: 2px solid rgba(255, 215, 0, 0.2); border-radius: 20px; padding: 30px;">
+                    <h3 style="color: var(--accent-gold); margin-top: 0; margin-bottom: 20px;">📋 Club Information</h3>
+
+                    <!-- Club Owner Name -->
+                    <div style="margin-bottom: 20px;">
+                        <label
+                            style="display: block; color: var(--text-gray); font-weight: 600; margin-bottom: 8px;">Club
+                            Owner Name *</label>
+                        <input id="clubOwnerName" type="text" placeholder="Enter club owner name"
+                            style="width: 100%; padding: 12px 15px; background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.3); border-radius: 8px; color: var(--text-white); font-size: 1em;">
+                    </div>
+
+                    <!-- Club Name -->
+                    <div style="margin-bottom: 20px;">
+                        <label
+                            style="display: block; color: var(--text-gray); font-weight: 600; margin-bottom: 8px;">Club
+                            Name *</label>
+                        <input id="clubName" type="text" placeholder="e.g., Manchester United, Liverpool FC"
+                            style="width: 100%; padding: 12px 15px; background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.3); border-radius: 8px; color: var(--text-white); font-size: 1em;">
+                    </div>
+
+                    <!-- Club Logo Upload -->
+                    <div style="margin-bottom: 20px;">
+                        <label
+                            style="display: block; color: var(--text-gray); font-weight: 600; margin-bottom: 8px;">Club
+                            Logo *</label>
+                        <input id="clubLogoInput" type="file" accept="image/*"
+                            style="width: 100%; padding: 12px 15px; background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.3); border-radius: 8px; color: var(--text-white); font-size: 1em; cursor: pointer;">
+                        <div id="logoPreview" style="margin-top: 15px; text-align: center; display: none;">
+                            <img id="logoPreviewImg" src="" alt="Logo preview"
+                                style="max-width: 120px; max-height: 120px; border-radius: 8px; border: 2px solid rgba(0,255,136,0.3);">
+                        </div>
+                    </div>
+
+                    <div id="clubMessage" style="margin-top: 15px; text-align: center;"></div>
+                </div>
+
+                <!-- RIGHT SIDE: PLAYERS LIST -->
+                <div
+                    style="background: var(--card-bg); border: 2px solid rgba(0, 212, 255, 0.2); border-radius: 20px; padding: 30px;">
+                    <h3 style="color: #00d4ff; margin-top: 0; margin-bottom: 20px;">👥 Add Players</h3>
+
+                    <!-- Player Name -->
+                    <div style="margin-bottom: 15px;">
+                        <label
+                            style="display: block; color: var(--text-gray); font-weight: 600; margin-bottom: 6px;">Player
+                            Name *</label>
+                        <input id="playerName" type="text" placeholder="Player full name"
+                            style="width: 100%; padding: 10px 12px; background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.3); border-radius: 6px; color: var(--text-white); font-size: 0.95em;">
+                    </div>
+
+                    <!-- Player Role -->
+                    <div style="margin-bottom: 15px;">
+                        <label
+                            style="display: block; color: var(--text-gray); font-weight: 600; margin-bottom: 6px;">Player
+                            Role *</label>
+                        <select id="playerRole"
+                            style="width: 100%; padding: 10px 12px; background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.3); border-radius: 6px; color: var(--text-white); font-size: 0.95em;">
+                            <option value="">-- Select Role --</option>
+                            <option value="Goalkeeper">🧤 Goalkeeper</option>
+                            <option value="Defender">🛡️ Defender</option>
+                            <option value="Midfielder">🎯 Midfielder</option>
+                            <option value="Forward">⚡ Forward</option>
+                        </select>
+                    </div>
+
+                    <!-- Add Player Button -->
+                    <button onclick="addPlayerToClub()"
+                        style="width: 100%; padding: 10px; background: rgba(0, 212, 255, 0.2); border: 1px solid rgba(0, 212, 255, 0.4); color: #00d4ff; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9em; margin-bottom: 20px; transition: all 0.3s ease;">➕
+                        Add Player</button>
+
+                    <!-- Players List -->
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        <div id="playersList" style="display: flex; flex-direction: column; gap: 10px;">
+                            <div style="text-align: center; color: var(--text-gray); padding: 20px; font-size: 0.9em;">
+                                No players added yet</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Create Club Button -->
+            <div style="margin-top: 30px; text-align: center;">
+                <button onclick="createClubWithPlayers()"
+                    style="padding: 15px 40px; background: rgba(0, 255, 136, 0.2); border: 1px solid rgba(0, 255, 136, 0.4); color: var(--accent-green); border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1.1em; transition: all 0.3s ease;"
+                    onmouseover="this.style.background='rgba(0, 255, 136, 0.3)'"
+                    onmouseout="this.style.background='rgba(0, 255, 136, 0.2)'">✅ Create Club & Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT CLUB STATS MODAL -->
+    <div id="editClubStatsModal"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 5000; display: none; flex-direction: column;">
+        <div
+            style="background: rgba(10, 14, 39, 0.95); border-bottom: 2px solid rgba(255, 215, 0, 0.3); padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="color: var(--accent-gold); margin: 0; font-size: 1.8em;">📊 Edit Club Stats</h2>
+            <button onclick="closeEditClubStatsModal()"
+                style="background: none; border: none; font-size: 2em; color: var(--text-gray); cursor: pointer; padding: 0; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">×</button>
+        </div>
+
+        <div style="flex: 1; overflow-y: auto; padding: 40px;">
+            <div
+                style="background: var(--card-bg); border: 2px solid rgba(255, 215, 0, 0.2); border-radius: 20px; padding: 30px; max-width: 600px; margin: 0 auto;">
+
+                <!-- Club Name Display -->
+                <div style="margin-bottom: 30px; text-align: center;">
+                    <div style="font-size: 1.5em; color: var(--accent-gold); font-weight: 700;"
+                        id="editClubNameDisplay"></div>
+                </div>
+
+                <!-- Wins Section -->
+                <div
+                    style="margin-bottom: 25px; background: rgba(0,255,136,0.1); padding: 20px; border-radius: 12px; border: 1px solid rgba(0,255,136,0.3);">
+                    <label
+                        style="display: block; color: var(--accent-green); font-weight: 700; margin-bottom: 15px; font-size: 1.1em;">🏆
+                        Wins</label>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <button onclick="adjustStat('won', -1)"
+                            style="padding: 10px 15px; background: rgba(255,107,107,0.2); border: 1px solid rgba(255,107,107,0.4); color: #ff6b6b; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1.2em;">➖</button>
+                        <input type="number" id="editWins" readonly
+                            style="flex: 1; padding: 12px 15px; background: rgba(0,255,136,0.2); border: 1px solid rgba(0,255,136,0.4); color: var(--accent-green); border-radius: 8px; text-align: center; font-weight: 700; font-size: 1.2em;">
+                        <button onclick="adjustStat('won', 1)"
+                            style="padding: 10px 15px; background: rgba(0,255,136,0.2); border: 1px solid rgba(0,255,136,0.4); color: var(--accent-green); border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1.2em;">➕</button>
+                    </div>
+                </div>
+
+                <!-- Draws Section -->
+                <div
+                    style="margin-bottom: 25px; background: rgba(255,215,0,0.1); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,215,0,0.3);">
+                    <label
+                        style="display: block; color: var(--accent-gold); font-weight: 700; margin-bottom: 15px; font-size: 1.1em;">🤝
+                        Draws</label>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <button onclick="adjustStat('drawn', -1)"
+                            style="padding: 10px 15px; background: rgba(255,107,107,0.2); border: 1px solid rgba(255,107,107,0.4); color: #ff6b6b; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1.2em;">➖</button>
+                        <input type="number" id="editDraws" readonly
+                            style="flex: 1; padding: 12px 15px; background: rgba(255,215,0,0.2); border: 1px solid rgba(255,215,0,0.4); color: var(--accent-gold); border-radius: 8px; text-align: center; font-weight: 700; font-size: 1.2em;">
+                        <button onclick="adjustStat('drawn', 1)"
+                            style="padding: 10px 15px; background: rgba(255,215,0,0.2); border: 1px solid rgba(255,215,0,0.4); color: var(--accent-gold); border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1.2em;">➕</button>
+                    </div>
+                </div>
+
+                <!-- Losses Section -->
+                <div
+                    style="margin-bottom: 25px; background: rgba(255,107,107,0.1); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,107,107,0.3);">
+                    <label
+                        style="display: block; color: #ff6b6b; font-weight: 700; margin-bottom: 15px; font-size: 1.1em;">😔
+                        Losses</label>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <button onclick="adjustStat('lost', -1)"
+                            style="padding: 10px 15px; background: rgba(255,107,107,0.2); border: 1px solid rgba(255,107,107,0.4); color: #ff6b6b; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1.2em;">➖</button>
+                        <input type="number" id="editLosses" readonly
+                            style="flex: 1; padding: 12px 15px; background: rgba(255,107,107,0.2); border: 1px solid rgba(255,107,107,0.4); color: #ff6b6b; border-radius: 8px; text-align: center; font-weight: 700; font-size: 1.2em;">
+                        <button onclick="adjustStat('lost', 1)"
+                            style="padding: 10px 15px; background: rgba(255,107,107,0.2); border: 1px solid rgba(255,107,107,0.4); color: #ff6b6b; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1.2em;">➕</button>
+                    </div>
+                </div>
+
+                <!-- Goals For Section -->
+                <div
+                    style="margin-bottom: 25px; background: rgba(0,212,255,0.1); padding: 20px; border-radius: 12px; border: 1px solid rgba(0,212,255,0.3);">
+                    <label
+                        style="display: block; color: #00d4ff; font-weight: 700; margin-bottom: 15px; font-size: 1.1em;">⚽
+                        Goals For</label>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <button onclick="adjustStat('goalsFor', -1)"
+                            style="padding: 10px 15px; background: rgba(255,107,107,0.2); border: 1px solid rgba(255,107,107,0.4); color: #ff6b6b; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1.2em;">➖</button>
+                        <input type="number" id="editGoalsFor" readonly
+                            style="flex: 1; padding: 12px 15px; background: rgba(0,212,255,0.2); border: 1px solid rgba(0,212,255,0.4); color: #00d4ff; border-radius: 8px; text-align: center; font-weight: 700; font-size: 1.2em;">
+                        <button onclick="adjustStat('goalsFor', 1)"
+                            style="padding: 10px 15px; background: rgba(0,212,255,0.2); border: 1px solid rgba(0,212,255,0.4); color: #00d4ff; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1.2em;">➕</button>
+                    </div>
+                </div>
+
+                <!-- Goals Against Section -->
+                <div
+                    style="margin-bottom: 25px; background: rgba(200,100,100,0.1); padding: 20px; border-radius: 12px; border: 1px solid rgba(200,100,100,0.3);">
+                    <label
+                        style="display: block; color: #d4a574; font-weight: 700; margin-bottom: 15px; font-size: 1.1em;">🛡️
+                        Goals Against</label>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <button onclick="adjustStat('goalsAgainst', -1)"
+                            style="padding: 10px 15px; background: rgba(255,107,107,0.2); border: 1px solid rgba(255,107,107,0.4); color: #ff6b6b; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1.2em;">➖</button>
+                        <input type="number" id="editGoalsAgainst" readonly
+                            style="flex: 1; padding: 12px 15px; background: rgba(200,100,100,0.2); border: 1px solid rgba(200,100,100,0.4); color: #d4a574; border-radius: 8px; text-align: center; font-weight: 700; font-size: 1.2em;">
+                        <button onclick="adjustStat('goalsAgainst', 1)"
+                            style="padding: 10px 15px; background: rgba(200,100,100,0.2); border: 1px solid rgba(200,100,100,0.4); color: #d4a574; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 1.2em;">➕</button>
+                    </div>
+                </div>
+
+                <!-- Save Button -->
+                <div style="margin-top: 30px; text-align: center;">
+                    <button onclick="saveClubStatsChanges()"
+                        style="padding: 15px 40px; background: rgba(0,255,136,0.2); border: 1px solid rgba(0,255,136,0.4); color: var(--accent-green); border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1.1em; transition: all 0.3s ease;"
+                        onmouseover="this.style.background='rgba(0,255,136,0.3)'"
+                        onmouseout="this.style.background='rgba(0,255,136,0.2)'">💾 Save Changes</button>
+                </div>
+
+                <!-- Message -->
+                <div id="editClubMessage" style="margin-top: 15px; text-align: center;"></div>
             </div>
         </div>
     </div>
@@ -5665,7 +6044,7 @@
 
                 if (isEditMode) {
                     // Update existing match
-                    await db.collection('matches').doc(editingMatchId).update({
+                    const updateData = {
                         ...matchCreationData,
                         teamA: {
                             ...matchCreationData.teamA,
@@ -5685,13 +6064,20 @@
                         livestreamCodes: matchCreationData.livestreamCodes || [],
                         updatedBy: adminEmail,
                         updatedAt: new Date().toISOString()
-                    });
+                    };
+
+                    // Add tournamentId if editing from within a tournament
+                    if (currentTournament && currentTournament.id) {
+                        updateData.tournamentId = currentTournament.id;
+                    }
+
+                    await db.collection('matches').doc(editingMatchId).update(updateData);
 
                     removeNotification(loadingNotif);
                     showNotification('✅ Match updated successfully!', 'success', 4000);
                 } else {
                     // Create new match document in Firebase
-                    const matchRef = await db.collection('matches').add({
+                    const matchData = {
                         ...matchCreationData,
                         teamA: {
                             ...matchCreationData.teamA,
@@ -5716,7 +6102,14 @@
                         createdAt: new Date().toISOString(),
                         status: 'upcoming',
                         matchType: 'singleMatch'
-                    });
+                    };
+
+                    // Add tournamentId if creating from within a tournament
+                    if (currentTournament && currentTournament.id) {
+                        matchData.tournamentId = currentTournament.id;
+                    }
+
+                    const matchRef = await db.collection('matches').add(matchData);
 
                     // Generate and add match passes for both teams
                     const matchId = matchRef.id;
@@ -7641,6 +8034,56 @@
             document.getElementById('tournamentOverlayModal').classList.remove('active');
         }
 
+        // Delete tournament
+        function deleteTournament(tournamentId) {
+            showConfirmation({
+                title: '🗑️ Delete Tournament',
+                message: 'Are you sure you want to delete this tournament?\n\nThis will also delete all matches and data associated with this tournament.',
+                icon: '⚠️',
+                messageType: 'warning',
+                confirmText: 'Delete',
+                cancelText: 'Cancel',
+                onConfirm: async () => {
+                    try {
+                        const loadingNotif = showNotification('⏳ Deleting tournament...', 'loading', 0);
+
+                        // Delete all matches associated with this tournament
+                        const matchesSnapshot = await db.collection('matches')
+                            .where('tournamentId', '==', tournamentId)
+                            .get();
+
+                        const batch = db.batch();
+
+                        // Delete all matches
+                        matchesSnapshot.forEach(doc => {
+                            batch.delete(doc.ref);
+                        });
+
+                        // Delete the tournament itself
+                        batch.delete(db.collection('tournaments').doc(tournamentId));
+
+                        // Commit batch
+                        await batch.commit();
+
+                        removeNotification(loadingNotif);
+                        showNotification('✅ Tournament deleted successfully!', 'success', 4000);
+
+                        // Reload tournaments
+                        setTimeout(() => {
+                            loadLiveTournaments();
+                            loadUpcomingTournaments();
+                            loadFinishedTournaments();
+                        }, 500);
+
+                    } catch (error) {
+                        console.error('Error deleting tournament:', error);
+                        removeNotification(loadingNotif);
+                        showNotification(`❌ Error deleting tournament: ${error.message}`, 'error', 5000);
+                    }
+                }
+            });
+        }
+
         // ===== TOURNAMENT STANDINGS TABLE FUNCTIONS =====
         function openAddTeamsToStandingsModal() {
             loadTeamsForStandings();
@@ -7761,7 +8204,12 @@
                 const container = document.getElementById('standingsTableBody');
                 container.innerHTML = '<tr><td colspan="11" style="text-align: center; padding: 40px; color: var(--text-gray);">⏳ Loading tournament standings...</td></tr>';
 
-                const standingsRef = await db.collection('tournaments').doc(currentTournament).collection('standings').get();
+                // Verify tournament exists
+                if (!currentTournament || !currentTournament.id) {
+                    throw new Error('No tournament selected');
+                }
+
+                const standingsRef = await db.collection('tournaments').doc(currentTournament.id).collection('clubs').get();
                 const standings = [];
 
                 // Get all matches for stats calculation
@@ -7769,17 +8217,27 @@
                     .where('matchType', '==', 'tournament')
                     .get();
 
-                // Build standings data
+                // Build standings data from clubs
                 standingsRef.forEach(doc => {
                     const data = doc.data();
                     standings.push({
                         id: doc.id,
+                        clubName: data.name || 'Unknown Club',
+                        ownerName: data.ownerName || 'No Owner',
+                        playersCount: data.playersCount || 0,
+                        played: data.played || 0,
+                        won: data.won || 0,
+                        drawn: data.drawn || 0,
+                        lost: data.lost || 0,
+                        goalsFor: data.goalsFor || 0,
+                        goalsAgainst: data.goalsAgainst || 0,
+                        points: data.points || 0,
                         ...data
                     });
                 });
 
                 if (standings.length === 0) {
-                    container.innerHTML = '<tr><td colspan="11" style="text-align: center; padding: 40px; color: var(--text-gray);">📋 No teams in standings yet. Add teams using the "➕ Add Teams" button.</td></tr>';
+                    container.innerHTML = '<tr><td colspan="11" style="text-align: center; padding: 40px; color: var(--text-gray);">📋 No clubs added yet. Add clubs using the "➕ Add Club" button.</td></tr>';
                     return;
                 }
 
@@ -7831,7 +8289,7 @@
 
                 // Merge calculated stats with standings data
                 standings.forEach(team => {
-                    const stats = statsMap.get(team.teamName) || {
+                    const stats = statsMap.get(team.clubName) || {
                         played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0
                     };
                     team.played = stats.played;
@@ -7853,21 +8311,24 @@
 
                 // Build table rows
                 let html = '';
-                standings.forEach((team, index) => {
-                    const gd = team.goalDifference >= 0 ? '+' + team.goalDifference : team.goalDifference;
+                standings.forEach((club, index) => {
+                    const gd = club.goalDifference >= 0 ? '+' + club.goalDifference : club.goalDifference;
                     html += `
                         <tr style="border-bottom: 1px solid rgba(255, 215, 0, 0.1);">
                             <td style="padding: 12px; text-align: center; color: var(--accent-gold); font-weight: 700;">${index + 1}</td>
-                            <td style="padding: 12px; text-align: left; color: var(--text-white);">${team.teamName}</td>
-                            <td style="padding: 12px; text-align: center; color: var(--text-white);">${team.played}</td>
-                            <td style="padding: 12px; text-align: center; color: var(--accent-green);">${team.won}</td>
-                            <td style="padding: 12px; text-align: center; color: var(--accent-gold);">${team.drawn}</td>
-                            <td style="padding: 12px; text-align: center; color: var(--accent-red);">${team.lost}</td>
-                            <td style="padding: 12px; text-align: center; color: var(--text-white);">${team.goalsFor}</td>
-                            <td style="padding: 12px; text-align: center; color: var(--text-white);">${team.goalsAgainst}</td>
-                            <td style="padding: 12px; text-align: center; color: ${team.goalDifference >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'};">${gd}</td>
+                            <td style="padding: 12px; text-align: left; color: var(--text-white);">${club.clubName}</td>
+                            <td style="padding: 12px; text-align: center; color: var(--text-white);">${club.played}</td>
+                            <td style="padding: 12px; text-align: center; color: var(--accent-green);">${club.won}</td>
+                            <td style="padding: 12px; text-align: center; color: var(--accent-gold);">${club.drawn}</td>
+                            <td style="padding: 12px; text-align: center; color: var(--accent-red);">${club.lost}</td>
+                            <td style="padding: 12px; text-align: center; color: var(--text-white);">${club.goalsFor}</td>
+                            <td style="padding: 12px; text-align: center; color: var(--text-white);">${club.goalsAgainst}</td>
+                            <td style="padding: 12px; text-align: center; color: ${club.goalDifference >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'};">${gd}</td>
                             <td style="padding: 12px; text-align: center; color: var(--text-gray);">-</td>
-                            <td style="padding: 12px; text-align: center; color: var(--accent-gold); font-weight: 700; font-size: 1.1em;">${team.points}</td>
+                            <td style="padding: 12px; text-align: center; color: var(--accent-gold); font-weight: 700; font-size: 1.1em;">${club.points}</td>
+                            <td style="padding: 12px; text-align: center;">
+                                <button onclick="openEditClubStatsModal('${club.id}', '${club.clubName}')" style="padding: 6px 12px; background: rgba(255,215,0,0.2); border: 1px solid rgba(255,215,0,0.4); color: var(--accent-gold); border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85em; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255,215,0,0.3)'" onmouseout="this.style.background='rgba(255,215,0,0.2)'">✏️ Edit Stats</button>
+                            </td>
                         </tr>
                     `;
                 });
@@ -7945,10 +8406,16 @@
                 const container = document.getElementById('overlayLiveMatchesContent');
                 container.innerHTML = '<p style="text-align: center; color: var(--text-gray);">⏳ Loading live matches...</p>';
 
-                const snapshot = await db.collection('matches')
+                let query = db.collection('matches')
                     .where('status', '==', 'live')
-                    .where('matchType', '==', 'tournament')
-                    .get();
+                    .where('matchType', '==', 'tournament');
+
+                // Filter by current tournament
+                if (currentTournament && currentTournament.id) {
+                    query = query.where('tournamentId', '==', currentTournament.id);
+                }
+
+                const snapshot = await query.get();
 
                 if (snapshot.empty) {
                     container.innerHTML = '<p style="text-align: center; color: var(--text-gray); padding: 40px;">🔴 No live tournament matches</p>';
@@ -8180,10 +8647,16 @@
                 const container = document.getElementById('overlayUpcomingMatchesContent');
                 container.innerHTML = '<p style="text-align: center; color: var(--text-gray);">⏳ Loading upcoming matches...</p>';
 
-                const snapshot = await db.collection('matches')
+                let query = db.collection('matches')
                     .where('status', '==', 'upcoming')
-                    .where('matchType', '==', 'tournament')
-                    .get();
+                    .where('matchType', '==', 'tournament');
+
+                // Filter by current tournament
+                if (currentTournament && currentTournament.id) {
+                    query = query.where('tournamentId', '==', currentTournament.id);
+                }
+
+                const snapshot = await query.get();
 
                 if (snapshot.empty) {
                     container.innerHTML = '<p style="text-align: center; color: var(--text-gray); padding: 40px;">📅 No upcoming tournament matches</p>';
@@ -8290,10 +8763,16 @@
                 const container = document.getElementById('overlayFinishedMatchesContent');
                 container.innerHTML = '<p style="text-align: center; color: var(--text-gray);">⏳ Loading finished matches...</p>';
 
-                const snapshot = await db.collection('matches')
+                let query = db.collection('matches')
                     .where('status', '==', 'finished')
-                    .where('matchType', '==', 'tournament')
-                    .get();
+                    .where('matchType', '==', 'tournament');
+
+                // Filter by current tournament
+                if (currentTournament && currentTournament.id) {
+                    query = query.where('tournamentId', '==', currentTournament.id);
+                }
+
+                const snapshot = await query.get();
 
                 if (snapshot.empty) {
                     container.innerHTML = '<p style="text-align: center; color: var(--text-gray); padding: 40px;">✅ No finished tournament matches</p>';
@@ -8394,10 +8873,16 @@
                 const container = document.getElementById('overlayCancelledMatchesContent');
                 container.innerHTML = '<p style="text-align: center; color: var(--text-gray);">⏳ Loading cancelled matches...</p>';
 
-                const snapshot = await db.collection('matches')
+                let query = db.collection('matches')
                     .where('status', '==', 'cancelled')
-                    .where('matchType', '==', 'tournament')
-                    .get();
+                    .where('matchType', '==', 'tournament');
+
+                // Filter by current tournament
+                if (currentTournament && currentTournament.id) {
+                    query = query.where('tournamentId', '==', currentTournament.id);
+                }
+
+                const snapshot = await query.get();
 
                 if (snapshot.empty) {
                     container.innerHTML = '<p style="text-align: center; color: var(--text-gray); padding: 40px;">❌ No cancelled tournament matches</p>';
@@ -10566,7 +11051,10 @@
                 const html = `
                     <div>
                         ${tournaments.map(t => `
-                            <div style="background: rgba(255, 215, 0, 0.05); border: 1px solid rgba(255, 215, 0, 0.2); padding: 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer;" onclick="openTournamentModal('${t.id}')">
+                            <div style="background: rgba(255, 215, 0, 0.05); border: 1px solid rgba(255, 215, 0, 0.2); padding: 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; position: relative;" onclick="openTournamentModal('${t.id}')">
+                                <button onclick="event.stopPropagation(); deleteTournament('${t.id}')" style="position: absolute; top: 10px; right: 10px; background: rgba(255, 107, 107, 0.2); border: 1px solid #ff6b6b; color: #ff6b6b; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 107, 107, 0.3)'; this.style.borderColor='#ff4444';" onmouseout="this.style.background='rgba(255, 107, 107, 0.2)'; this.style.borderColor='#ff6b6b';">
+                                    🗑️ Delete
+                                </button>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                                     <div>
                                         <div style="color: var(--text-gray); font-size: 0.9em; margin-bottom: 5px;">Tournament</div>
@@ -10615,7 +11103,10 @@
                 const html = `
                     <div>
                         ${tournaments.map(t => `
-                            <div style="background: rgba(255, 215, 0, 0.05); border: 1px solid rgba(255, 215, 0, 0.2); padding: 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer;" onclick="openTournamentModal('${t.id}')">
+                            <div style="background: rgba(255, 215, 0, 0.05); border: 1px solid rgba(255, 215, 0, 0.2); padding: 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; position: relative;" onclick="openTournamentModal('${t.id}')">
+                                <button onclick="event.stopPropagation(); deleteTournament('${t.id}')" style="position: absolute; top: 10px; right: 10px; background: rgba(255, 107, 107, 0.2); border: 1px solid #ff6b6b; color: #ff6b6b; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 107, 107, 0.3)'; this.style.borderColor='#ff4444';" onmouseout="this.style.background='rgba(255, 107, 107, 0.2)'; this.style.borderColor='#ff6b6b';">
+                                    🗑️ Delete
+                                </button>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                                     <div>
                                         <div style="color: var(--text-gray); font-size: 0.9em; margin-bottom: 5px;">Tournament</div>
@@ -10664,7 +11155,10 @@
                 const html = `
                     <div>
                         ${tournaments.map(t => `
-                            <div style="background: rgba(255, 215, 0, 0.05); border: 1px solid rgba(255, 215, 0, 0.2); padding: 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer;" onclick="openTournamentModal('${t.id}')">
+                            <div style="background: rgba(255, 215, 0, 0.05); border: 1px solid rgba(255, 215, 0, 0.2); padding: 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; position: relative;" onclick="openTournamentModal('${t.id}')">
+                                <button onclick="event.stopPropagation(); deleteTournament('${t.id}')" style="position: absolute; top: 10px; right: 10px; background: rgba(255, 107, 107, 0.2); border: 1px solid #ff6b6b; color: #ff6b6b; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85em; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255, 107, 107, 0.3)'; this.style.borderColor='#ff4444';" onmouseout="this.style.background='rgba(255, 107, 107, 0.2)'; this.style.borderColor='#ff6b6b';">
+                                    🗑️ Delete
+                                </button>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                                     <div>
                                         <div style="color: var(--text-gray); font-size: 0.9em; margin-bottom: 5px;">Tournament</div>
@@ -11125,7 +11619,14 @@
 
         // Load finished matches dropdown
         function loadFinishedMatchesDropdown() {
-            db.collection('matches').where('status', '==', 'finished').get().then(snapshot => {
+            let query = db.collection('matches').where('status', '==', 'finished');
+
+            // Filter by tournament if one is currently selected
+            if (currentTournament && currentTournament.id) {
+                query = query.where('tournamentId', '==', currentTournament.id);
+            }
+
+            query.get().then(snapshot => {
                 const select = document.getElementById('finishedMatchSelect');
                 select.innerHTML = '<option value="">-- Select a match --</option>';
 
@@ -12688,6 +13189,750 @@
         function closeLivestreamsModal() {
             document.getElementById('livestreamViewerModal').style.display = 'none';
             stopLivestream();
+        }
+
+        // ===== REGISTER PLAYERS FUNCTIONS =====
+        let registersData = [];
+
+        function openRegisterPlayersModal() {
+            document.getElementById('registerPlayersModal').style.display = 'flex';
+            loadRegisters();
+        }
+
+        function closeRegisterPlayersModal() {
+            document.getElementById('registerPlayersModal').style.display = 'none';
+        }
+
+        function switchRegisterTab(tab) {
+            // Hide all tabs
+            document.getElementById('registerCreateTab').style.display = 'none';
+            document.getElementById('registerViewTab').style.display = 'none';
+
+            // Update button styles
+            document.querySelectorAll('.register-tab').forEach(btn => {
+                btn.style.color = 'var(--text-gray)';
+                btn.style.borderBottom = 'none';
+            });
+
+            // Show selected tab and update button
+            if (tab === 'create') {
+                document.getElementById('registerCreateTab').style.display = 'block';
+                event.target.style.color = 'var(--accent-gold)';
+                event.target.style.borderBottom = '3px solid var(--accent-gold)';
+            } else if (tab === 'view') {
+                document.getElementById('registerViewTab').style.display = 'block';
+                event.target.style.color = 'var(--accent-gold)';
+                event.target.style.borderBottom = '3px solid var(--accent-gold)';
+                loadRegisters();
+            }
+        }
+
+        // Update register type display (show/hide amount or code section)
+        function updateRegisterTypeDisplay() {
+            const registerType = document.querySelector('input[name="registerType"]:checked').value;
+            const amountSection = document.getElementById('amountSection');
+            const codeSection = document.getElementById('codeSection');
+
+            if (registerType === 'free') {
+                amountSection.style.display = 'none';
+                codeSection.style.display = 'none';
+            } else if (registerType === 'paid') {
+                amountSection.style.display = 'block';
+                codeSection.style.display = 'none';
+            } else if (registerType === 'code') {
+                amountSection.style.display = 'none';
+                codeSection.style.display = 'block';
+            }
+        }
+
+        async function createRegister() {
+            const name = document.getElementById('registerName').value.trim();
+            const maxPlayers = parseInt(document.getElementById('maxPlayersAllowed').value);
+            const registerType = document.querySelector('input[name="registerType"]:checked').value;
+            const amount = registerType === 'paid' ? parseInt(document.getElementById('registrationAmount').value) : null;
+            const code = registerType === 'code' ? document.getElementById('registrationCode').value.trim() : null;
+            const startTime = document.getElementById('startTime').value;
+            const endTime = document.getElementById('endTime').value;
+
+            const msgDiv = document.getElementById('createRegisterMessage');
+
+            // Validation
+            if (!name) {
+                msgDiv.innerHTML = '<div style="color: #ff6b6b; font-weight: 600;">❌ Please enter register name</div>';
+                return;
+            }
+            if (!maxPlayers || maxPlayers < 1) {
+                msgDiv.innerHTML = '<div style="color: #ff6b6b; font-weight: 600;">❌ Please enter valid number of players</div>';
+                return;
+            }
+            if (registerType === 'paid' && (!amount || amount < 0)) {
+                msgDiv.innerHTML = '<div style="color: #ff6b6b; font-weight: 600;">❌ Please enter valid registration amount</div>';
+                return;
+            }
+            if (registerType === 'code' && !code) {
+                msgDiv.innerHTML = '<div style="color: #ff6b6b; font-weight: 600;">❌ Please enter registration code</div>';
+                return;
+            }
+            if (!startTime || !endTime) {
+                msgDiv.innerHTML = '<div style="color: #ff6b6b; font-weight: 600;">❌ Please select start and end times</div>';
+                return;
+            }
+
+            try {
+                msgDiv.innerHTML = '<div style="color: var(--accent-gold); font-weight: 600;">⏳ Creating register...</div>';
+
+                const registerId = Date.now().toString();
+                const registerData = {
+                    id: registerId,
+                    name: name,
+                    maxPlayers: maxPlayers,
+                    currentPlayers: 0,
+                    registerType: registerType,
+                    amount: amount,
+                    code: code,
+                    startTime: startTime,
+                    endTime: endTime,
+                    createdAt: new Date().toISOString(),
+                    userInfoRequired: {
+                        name: document.getElementById('needName').checked,
+                        teamName: document.getElementById('needTeamName').checked,
+                        playerList: document.getElementById('needPlayerList').checked
+                    },
+                    joinedPlayers: [],
+                    shareCode: generateShareCode(),
+                    totalRevenue: 0
+                };
+
+                // Save to Firebase
+                await db.collection('playerRegisters').doc(registerId).set(registerData);
+
+                // Clear form
+                document.getElementById('registerName').value = '';
+                document.getElementById('maxPlayersAllowed').value = '';
+                document.getElementById('registrationAmount').value = '';
+                document.getElementById('registrationCode').value = '';
+                document.getElementById('startTime').value = '';
+                document.getElementById('endTime').value = '';
+
+                msgDiv.innerHTML = '<div style="color: var(--accent-green); font-weight: 600;">✅ Register created successfully!</div>';
+
+                setTimeout(() => {
+                    loadRegisters();
+                    switchRegisterTab('view');
+                }, 1500);
+
+            } catch (error) {
+                msgDiv.innerHTML = `<div style="color: #ff6b6b; font-weight: 600;">❌ Error: ${error.message}</div>`;
+                console.error('Error creating register:', error);
+            }
+        }
+
+        async function loadRegisters() {
+            const container = document.getElementById('registersGrid');
+            container.innerHTML = '<div style="text-align: center; color: var(--text-gray); padding: 40px 20px;">Loading registers...</div>';
+
+            try {
+                const snapshot = await db.collection('playerRegisters').get();
+                registersData = [];
+
+                snapshot.forEach(doc => {
+                    registersData.push({ id: doc.id, ...doc.data() });
+                });
+
+                if (registersData.length === 0) {
+                    container.innerHTML = '<div style="text-align: center; color: var(--text-gray); padding: 40px 20px; grid-column: 1/-1;">No registers created yet</div>';
+                    return;
+                }
+
+                renderRegisterCards();
+            } catch (error) {
+                container.innerHTML = `<div style="color: #ff6b6b; padding: 20px; grid-column: 1/-1;">❌ Error: ${error.message}</div>`;
+                console.error('Error loading registers:', error);
+            }
+        }
+
+        function renderRegisterCards() {
+            const container = document.getElementById('registersGrid');
+            container.innerHTML = '';
+
+            registersData.forEach(register => {
+                const startDate = new Date(register.startTime).toLocaleString();
+                const endDate = new Date(register.endTime).toLocaleString();
+                const playerCount = register.joinedPlayers?.length || 0;
+                const spotsLeft = register.maxPlayers - playerCount;
+
+                const card = document.createElement('div');
+                card.style.cssText = `
+                    background: var(--card-bg);
+                    border: 2px solid rgba(255, 215, 0, 0.2);
+                    border-radius: 15px;
+                    padding: 25px;
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+                `;
+
+                const getTypeDisplay = (type, amount) => {
+                    if (type === 'free') return { icon: '✅', label: 'Free', bg: 'rgba(0, 255, 136, 0.2)', color: 'var(--accent-green)' };
+                    if (type === 'paid') return { icon: '💳', label: `Paid (₦${amount})`, bg: 'rgba(255, 215, 0, 0.2)', color: 'var(--accent-gold)' };
+                    if (type === 'code') return { icon: '🔐', label: 'Code Required', bg: 'rgba(0, 212, 255, 0.2)', color: '#00d4ff' };
+                };
+                const typeDisplay = getTypeDisplay(register.registerType, register.amount || 0);
+
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                        <h3 style="color: var(--accent-gold); margin: 0; font-size: 1.2em;">${register.name}</h3>
+                        <span style="background: ${typeDisplay.bg}; padding: 6px 12px; border-radius: 6px; color: ${typeDisplay.color}; font-weight: 600; font-size: 0.85em;">
+                            ${typeDisplay.icon} ${typeDisplay.label}
+                        </span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div style="background: rgba(255, 215, 0, 0.1); padding: 12px; border-radius: 8px;">
+                            <div style="color: var(--text-gray); font-size: 0.85em; margin-bottom: 4px;">Players Registered</div>
+                            <div style="color: var(--accent-gold); font-weight: 700; font-size: 1.3em;">${playerCount}/${register.maxPlayers}</div>
+                        </div>
+                        <div style="background: rgba(0, 255, 136, 0.1); padding: 12px; border-radius: 8px;">
+                            <div style="color: var(--text-gray); font-size: 0.85em; margin-bottom: 4px;">Spots Left</div>
+                            <div style="color: var(--accent-green); font-weight: 700; font-size: 1.3em;">${spotsLeft}</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <div style="color: var(--text-gray); font-size: 0.9em; margin-bottom: 8px;">
+                            📅 <strong>Start:</strong> ${startDate}
+                        </div>
+                        <div style="color: var(--text-gray); font-size: 0.9em;">
+                            📅 <strong>End:</strong> ${endDate}
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="viewRegisterDetails('${register.id}')" 
+                            style="flex: 1; padding: 10px; background: rgba(0, 212, 255, 0.2); border: 1px solid rgba(0, 212, 255, 0.4); color: #00d4ff; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9em; transition: all 0.3s ease;"
+                            onmouseover="this.style.background='rgba(0, 212, 255, 0.3)'"
+                            onmouseout="this.style.background='rgba(0, 212, 255, 0.2)'">👁️ View</button>
+                        <button onclick="shareRegister('${register.id}')" 
+                            style="flex: 1; padding: 10px; background: rgba(255, 215, 0, 0.2); border: 1px solid rgba(255, 215, 0, 0.4); color: var(--accent-gold); border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9em; transition: all 0.3s ease;"
+                            onmouseover="this.style.background='rgba(255, 215, 0, 0.3)'"
+                            onmouseout="this.style.background='rgba(255, 215, 0, 0.2)'">📤 Share</button>
+                        <button onclick="deleteRegister('${register.id}')" 
+                            style="flex: 1; padding: 10px; background: rgba(255, 107, 107, 0.2); border: 1px solid rgba(255, 107, 107, 0.4); color: #ff6b6b; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9em; transition: all 0.3s ease;"
+                            onmouseover="this.style.background='rgba(255, 107, 107, 0.3)'"
+                            onmouseout="this.style.background='rgba(255, 107, 107, 0.2)'">🗑️ Delete</button>
+                    </div>
+                `;
+
+                card.onmouseover = () => {
+                    card.style.borderColor = 'var(--accent-gold)';
+                    card.style.boxShadow = '0 10px 30px var(--hover-glow)';
+                    card.style.transform = 'translateY(-5px)';
+                };
+
+                card.onmouseout = () => {
+                    card.style.borderColor = 'rgba(255, 215, 0, 0.2)';
+                    card.style.boxShadow = 'none';
+                    card.style.transform = 'translateY(0)';
+                };
+
+                container.appendChild(card);
+            });
+        }
+
+        function viewRegisterDetails(registerId) {
+            const register = registersData.find(r => r.id === registerId);
+            if (!register) return;
+
+            const players = register.joinedPlayers || [];
+            let html = `
+                <div style="background: rgba(10, 14, 39, 0.95); border: 2px solid rgba(255, 215, 0, 0.3); border-radius: 15px; padding: 30px; max-width: 700px; margin: 0 auto;">
+                    <h2 style="color: var(--accent-gold); margin-bottom: 25px; text-align: center;">${register.name} - Participants</h2>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
+                        <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 8px; text-align: center;">
+                            <div style="color: var(--text-gray); font-size: 0.9em;">Total Joined</div>
+                            <div style="color: var(--accent-gold); font-size: 2em; font-weight: 700;">${players.length}</div>
+                        </div>
+                        <div style="background: rgba(0, 255, 136, 0.1); padding: 15px; border-radius: 8px; text-align: center;">
+                            <div style="color: var(--text-gray); font-size: 0.9em;">Max Players</div>
+                            <div style="color: var(--accent-green); font-size: 2em; font-weight: 700;">${register.maxPlayers}</div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: var(--accent-gold); margin-bottom: 15px;">📋 Joined Players</h3>
+                    <div style="max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+            `;
+
+            if (players.length === 0) {
+                html += '<div style="text-align: center; color: var(--text-gray); padding: 30px;">No players joined yet</div>';
+            } else {
+                players.forEach((player, index) => {
+                    html += `
+                        <div style="background: rgba(255, 215, 0, 0.08); border: 1px solid rgba(255, 215, 0, 0.3); padding: 15px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;"
+                            onmouseover="this.style.background='rgba(255, 215, 0, 0.15)'"
+                            onmouseout="this.style.background='rgba(255, 215, 0, 0.08)'"
+                            onclick="viewPlayerDetails('${registerId}', ${index})">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="color: var(--accent-gold); font-weight: 600; margin-bottom: 4px;">${player.name || 'N/A'}</div>
+                                    <div style="color: var(--text-gray); font-size: 0.9em;">${player.teamName || 'No team'}</div>
+                                    <div style="color: var(--text-gray); font-size: 0.85em; margin-top: 4px;">Joined: ${new Date(player.joinedAt).toLocaleDateString()}</div>
+                                </div>
+                                <div style="background: rgba(0, 212, 255, 0.2); padding: 8px 12px; border-radius: 6px; color: #00d4ff; font-weight: 600; font-size: 0.85em;">View</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            html += `
+                    </div>
+                    <button onclick="closeRegisterDetailsModal()" style="width: 100%; margin-top: 25px; padding: 12px; background: rgba(255, 215, 0, 0.2); border: 1px solid rgba(255, 215, 0, 0.4); color: var(--accent-gold); border-radius: 8px; cursor: pointer; font-weight: 600;">Close</button>
+                </div>
+            `;
+
+            // Create modal overlay
+            const overlay = document.createElement('div');
+            overlay.id = 'registerDetailsModal';
+            overlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 6000; display: flex; align-items: center; justify-content: center; overflow-y: auto; padding: 40px 20px;';
+            overlay.innerHTML = html;
+            overlay.onclick = (e) => {
+                if (e.target === overlay) closeRegisterDetailsModal();
+            };
+
+            document.body.appendChild(overlay);
+        }
+
+        function closeRegisterDetailsModal() {
+            const modal = document.getElementById('registerDetailsModal');
+            if (modal) modal.remove();
+        }
+
+        function viewPlayerDetails(registerId, playerIndex) {
+            const register = registersData.find(r => r.id === registerId);
+            const player = register.joinedPlayers[playerIndex];
+
+            if (!player) return;
+
+            let html = `
+                <div style="background: rgba(10, 14, 39, 0.95); border: 2px solid rgba(0, 212, 255, 0.3); border-radius: 15px; padding: 30px; max-width: 500px;">
+                    <h2 style="color: #00d4ff; margin-bottom: 25px; text-align: center;">Player Details</h2>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 8px;">
+                            <div style="color: var(--text-gray); font-size: 0.9em; margin-bottom: 4px;">Full Name</div>
+                            <div style="color: var(--text-white); font-weight: 600; font-size: 1.1em;">${player.name || 'N/A'}</div>
+                        </div>
+
+                        ${player.teamName ? `
+                        <div style="background: rgba(0, 255, 136, 0.1); padding: 15px; border-radius: 8px;">
+                            <div style="color: var(--text-gray); font-size: 0.9em; margin-bottom: 4px;">DLS Team Name</div>
+                            <div style="color: var(--accent-green); font-weight: 600; font-size: 1.1em;">${player.teamName}</div>
+                        </div>
+                        ` : ''}
+
+                        ${player.playerList ? `
+                        <div style="background: rgba(0, 212, 255, 0.1); padding: 15px; border-radius: 8px;">
+                            <div style="color: var(--text-gray); font-size: 0.9em; margin-bottom: 4px;">Player List</div>
+                            <div style="color: #00d4ff; font-weight: 600; word-break: break-word;">${player.playerList}</div>
+                        </div>
+                        ` : ''}
+
+                        <div style="background: rgba(100, 100, 100, 0.1); padding: 15px; border-radius: 8px;">
+                            <div style="color: var(--text-gray); font-size: 0.9em; margin-bottom: 4px;">Joined Date</div>
+                            <div style="color: var(--text-white); font-weight: 600;">${new Date(player.joinedAt).toLocaleString()}</div>
+                        </div>
+                    </div>
+
+                    <button onclick="closeRegisterDetailsModal()" style="width: 100%; margin-top: 25px; padding: 12px; background: rgba(255, 215, 0, 0.2); border: 1px solid rgba(255, 215, 0, 0.4); color: var(--accent-gold); border-radius: 8px; cursor: pointer; font-weight: 600;">Close</button>
+                </div>
+            `;
+
+            const overlay = document.createElement('div');
+            overlay.id = 'playerDetailsModal';
+            overlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 6000; display: flex; align-items: center; justify-content: center; padding: 40px 20px;';
+            overlay.innerHTML = html;
+            overlay.onclick = (e) => {
+                if (e.target === overlay) closeRegisterDetailsModal();
+            };
+
+            // Remove previous modals first
+            const existing = document.getElementById('playerDetailsModal');
+            if (existing) existing.remove();
+            document.body.appendChild(overlay);
+        }
+
+        function shareRegister(registerId) {
+            const register = registersData.find(r => r.id === registerId);
+            if (!register) return;
+
+            const shareUrl = `${window.location.origin}/register?code=${register.shareCode}&id=${registerId}`;
+
+            const html = `
+                <div style="background: rgba(10, 14, 39, 0.95); border: 2px solid rgba(255, 215, 0, 0.3); border-radius: 15px; padding: 30px; max-width: 500px;">
+                    <h2 style="color: var(--accent-gold); margin-bottom: 25px; text-align: center;">📤 Share Register</h2>
+                    
+                    <div style="background: rgba(255, 215, 0, 0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <div style="color: var(--text-gray); font-size: 0.9em; margin-bottom: 10px;">Share Link</div>
+                        <div style="display: flex; gap: 10px;">
+                            <input id="shareInput" type="text" value="${shareUrl}" readonly style="flex: 1; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,215,0,0.3); border-radius: 6px; color: var(--text-white);">
+                            <button onclick="copyShareLink()" style="padding: 10px 15px; background: rgba(0, 255, 136, 0.2); border: 1px solid rgba(0, 255, 136, 0.4); color: var(--accent-green); border-radius: 6px; cursor: pointer; font-weight: 600;">📋 Copy</button>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(0, 212, 255, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <div style="color: #00d4ff; font-weight: 600; margin-bottom: 5px;">Share Code</div>
+                        <div style="color: var(--text-white); font-weight: 700; font-size: 1.3em; word-break: break-all;">${register.shareCode}</div>
+                    </div>
+
+                    <div style="background: rgba(100, 100, 100, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <div style="color: var(--text-gray); font-size: 0.9em;">Players can use this link or code to join the register</div>
+                    </div>
+
+                    <button onclick="closeRegisterDetailsModal()" style="width: 100%; padding: 12px; background: rgba(255, 215, 0, 0.2); border: 1px solid rgba(255, 215, 0, 0.4); color: var(--accent-gold); border-radius: 8px; cursor: pointer; font-weight: 600;">Close</button>
+                </div>
+            `;
+
+            const overlay = document.createElement('div');
+            overlay.id = 'shareRegisterModal';
+            overlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 6000; display: flex; align-items: center; justify-content: center; padding: 40px 20px;';
+            overlay.innerHTML = html;
+            overlay.onclick = (e) => {
+                if (e.target === overlay) closeRegisterDetailsModal();
+            };
+
+            const existing = document.getElementById('shareRegisterModal');
+            if (existing) existing.remove();
+            document.body.appendChild(overlay);
+        }
+
+        function copyShareLink() {
+            const input = document.getElementById('shareInput');
+            input.select();
+            document.execCommand('copy');
+            alert('Share link copied to clipboard!');
+        }
+
+        async function deleteRegister(registerId) {
+            if (!confirm('Are you sure you want to delete this register?')) return;
+
+            try {
+                await db.collection('playerRegisters').doc(registerId).delete();
+                registersData = registersData.filter(r => r.id !== registerId);
+                renderRegisterCards();
+                showNotification('✅ Register deleted successfully', 'success', 2000);
+            } catch (error) {
+                showNotification(`❌ Error: ${error.message}`, 'error', 2000);
+                console.error('Error deleting register:', error);
+            }
+        }
+
+        function generateShareCode() {
+            return Math.random().toString(36).substring(2, 10).toUpperCase();
+        }
+
+        // ===== ADD CLUB WITH PLAYERS FUNCTIONS =====
+        let currentClubLogo = null;
+        let tempPlayersList = [];
+        let currentTournamentId = null;
+
+        function openAddClubModal() {
+            try {
+                const modal = document.getElementById('addClubModal');
+                if (!modal) {
+                    console.error('Modal element not found');
+                    return;
+                }
+
+                // Get current tournament ID from global currentTournament
+                if (!currentTournament || !currentTournament.id) {
+                    alert('Please select a tournament first');
+                    return;
+                }
+
+                currentTournamentId = currentTournament.id;
+                console.log('Opening modal with tournament ID:', currentTournamentId);
+
+                modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 5000; display: flex !important; flex-direction: column; overflow-y: auto;';
+                tempPlayersList = [];
+                clearClubForm();
+            } catch (error) {
+                console.error('Error opening modal:', error);
+            }
+        }
+
+        function closeAddClubModal() {
+            const modal = document.getElementById('addClubModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+            clearClubForm();
+            tempPlayersList = [];
+        }
+
+        function clearClubForm() {
+            document.getElementById('clubOwnerName').value = '';
+            document.getElementById('clubName').value = '';
+            document.getElementById('clubLogoInput').value = '';
+            document.getElementById('playerName').value = '';
+            document.getElementById('playerRole').value = '';
+            document.getElementById('logoPreview').style.display = 'none';
+            document.getElementById('logoPreviewImg').src = '';
+            document.getElementById('clubMessage').innerHTML = '';
+            currentClubLogo = null;
+            renderPlayersList();
+        }
+
+        // Handle logo file upload and preview
+        document.addEventListener('change', function (e) {
+            if (e.target.id === 'clubLogoInput') {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        currentClubLogo = event.target.result;
+                        document.getElementById('logoPreviewImg').src = currentClubLogo;
+                        document.getElementById('logoPreview').style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+
+        function addPlayerToClub() {
+            const playerName = document.getElementById('playerName').value.trim();
+            const playerRole = document.getElementById('playerRole').value;
+
+            if (!playerName) {
+                alert('❌ Please enter player name');
+                return;
+            }
+            if (!playerRole) {
+                alert('❌ Please select player role');
+                return;
+            }
+
+            // Add to temp list
+            tempPlayersList.push({
+                id: Date.now().toString(),
+                name: playerName,
+                role: playerRole
+            });
+
+            // Clear inputs
+            document.getElementById('playerName').value = '';
+            document.getElementById('playerRole').value = '';
+
+            renderPlayersList();
+        }
+
+        function renderPlayersList() {
+            const container = document.getElementById('playersList');
+
+            if (tempPlayersList.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: var(--text-gray); padding: 20px; font-size: 0.9em;">No players added yet</div>';
+                return;
+            }
+
+            container.innerHTML = tempPlayersList.map((player, index) => `
+                <div style="background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3); padding: 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="color: #00d4ff; font-weight: 600; font-size: 0.95em;">${player.name}</div>
+                        <div style="color: var(--text-gray); font-size: 0.85em;">${player.role}</div>
+                    </div>
+                    <button onclick="removePlayer(${index})" style="padding: 6px 10px; background: rgba(255,107,107,0.2); border: 1px solid rgba(255,107,107,0.3); color: #ff6b6b; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.8em;">Remove</button>
+                </div>
+            `).join('');
+        }
+
+        function removePlayer(index) {
+            tempPlayersList.splice(index, 1);
+            renderPlayersList();
+        }
+
+        async function createClubWithPlayers() {
+            const clubOwnerName = document.getElementById('clubOwnerName').value.trim();
+            const clubName = document.getElementById('clubName').value.trim();
+            const msgDiv = document.getElementById('clubMessage');
+
+            // Validation
+            if (!clubOwnerName) {
+                msgDiv.innerHTML = '<div style="color: #ff6b6b; font-weight: 600;">❌ Please enter club owner name</div>';
+                return;
+            }
+            if (!clubName) {
+                msgDiv.innerHTML = '<div style="color: #ff6b6b; font-weight: 600;">❌ Please enter club name</div>';
+                return;
+            }
+            if (!currentClubLogo) {
+                msgDiv.innerHTML = '<div style="color: #ff6b6b; font-weight: 600;">❌ Please upload club logo</div>';
+                return;
+            }
+            if (tempPlayersList.length === 0) {
+                msgDiv.innerHTML = '<div style="color: #ff6b6b; font-weight: 600;">❌ Please add at least one player</div>';
+                return;
+            }
+
+            try {
+                msgDiv.innerHTML = '<div style="color: var(--accent-gold); font-weight: 600;">⏳ Creating club and saving...</div>';
+
+                const clubId = Date.now().toString();
+                const clubData = {
+                    id: clubId,
+                    ownerName: clubOwnerName,
+                    name: clubName,
+                    logo: currentClubLogo,
+                    players: tempPlayersList,
+                    playersCount: tempPlayersList.length,
+                    createdAt: new Date().toISOString(),
+                    // Initialize default stats
+                    won: 0,
+                    drawn: 0,
+                    lost: 0,
+                    played: 0,
+                    goalsFor: 0,
+                    goalsAgainst: 0,
+                    points: 0
+                };
+
+                // Save to Firebase under tournament
+                await db.collection('tournaments').doc(currentTournamentId)
+                    .collection('clubs').doc(clubId).set(clubData);
+
+                msgDiv.innerHTML = '<div style="color: var(--accent-green); font-weight: 600;">✅ Club created and saved successfully!</div>';
+
+                setTimeout(() => {
+                    closeAddClubModal();
+                    showNotification('✅ Club added to tournament', 'success', 2000);
+                    loadTournamentClubs(currentTournamentId);
+                    refreshTournamentStandings();
+                }, 1500);
+
+            } catch (error) {
+                msgDiv.innerHTML = `<div style="color: #ff6b6b; font-weight: 600;">❌ Error: ${error.message}</div>`;
+                console.error('Error creating club:', error);
+            }
+        }
+
+        async function loadTournamentClubs(tournamentId) {
+            try {
+                const snapshot = await db.collection('tournaments').doc(tournamentId)
+                    .collection('clubs').get();
+
+                let clubs = [];
+                snapshot.forEach(doc => {
+                    clubs.push({ id: doc.id, ...doc.data() });
+                });
+
+                return clubs;
+            } catch (error) {
+                console.error('Error loading clubs:', error);
+                return [];
+            }
+        }
+
+        // Global variables for edit modal
+        let editingClubId = null;
+        let editingClubStats = {
+            won: 0,
+            drawn: 0,
+            lost: 0,
+            goalsFor: 0,
+            goalsAgainst: 0
+        };
+
+        function openEditClubStatsModal(clubId, clubName) {
+            editingClubId = clubId;
+            document.getElementById('editClubNameDisplay').textContent = clubName;
+            document.getElementById('editClubMessage').innerHTML = '';
+
+            // Load current stats from the table
+            loadEditClubStats(clubId);
+
+            const modal = document.getElementById('editClubStatsModal');
+            modal.style.display = 'flex';
+        }
+
+        function closeEditClubStatsModal() {
+            const modal = document.getElementById('editClubStatsModal');
+            modal.style.display = 'none';
+            editingClubId = null;
+        }
+
+        function loadEditClubStats(clubId) {
+            // Find the club in the standings
+            const standingsRef = db.collection('tournaments').doc(currentTournament.id)
+                .collection('clubs').doc(clubId);
+
+            standingsRef.get().then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    editingClubStats = {
+                        won: data.won || 0,
+                        drawn: data.drawn || 0,
+                        lost: data.lost || 0,
+                        goalsFor: data.goalsFor || 0,
+                        goalsAgainst: data.goalsAgainst || 0
+                    };
+                    updateEditStatsDisplay();
+                }
+            });
+        }
+
+        function adjustStat(stat, change) {
+            editingClubStats[stat] = Math.max(0, editingClubStats[stat] + change);
+            updateEditStatsDisplay();
+        }
+
+        function updateEditStatsDisplay() {
+            document.getElementById('editWins').value = editingClubStats.won;
+            document.getElementById('editDraws').value = editingClubStats.drawn;
+            document.getElementById('editLosses').value = editingClubStats.lost;
+            document.getElementById('editGoalsFor').value = editingClubStats.goalsFor;
+            document.getElementById('editGoalsAgainst').value = editingClubStats.goalsAgainst;
+        }
+
+        async function saveClubStatsChanges() {
+            const msgDiv = document.getElementById('editClubMessage');
+
+            if (!editingClubId || !currentTournament) {
+                msgDiv.innerHTML = '<div style="color: #ff6b6b; font-weight: 600;">❌ Error: Missing required data</div>';
+                return;
+            }
+
+            try {
+                msgDiv.innerHTML = '<div style="color: var(--accent-gold); font-weight: 600;">⏳ Saving changes...</div>';
+
+                // Calculate played matches
+                const played = editingClubStats.won + editingClubStats.drawn + editingClubStats.lost;
+
+                // Calculate points
+                const points = (editingClubStats.won * 3) + (editingClubStats.drawn * 1);
+
+                // Update club stats in Firestore
+                await db.collection('tournaments').doc(currentTournament.id)
+                    .collection('clubs').doc(editingClubId).update({
+                        won: editingClubStats.won,
+                        drawn: editingClubStats.drawn,
+                        lost: editingClubStats.lost,
+                        played: played,
+                        goalsFor: editingClubStats.goalsFor,
+                        goalsAgainst: editingClubStats.goalsAgainst,
+                        points: points,
+                        updatedAt: new Date().toISOString()
+                    });
+
+                msgDiv.innerHTML = '<div style="color: var(--accent-green); font-weight: 600;">✅ Stats updated successfully!</div>';
+
+                setTimeout(() => {
+                    closeEditClubStatsModal();
+                    showNotification('✅ Club stats updated', 'success', 2000);
+                    refreshTournamentStandings();
+                }, 1500);
+
+            } catch (error) {
+                msgDiv.innerHTML = `<div style="color: #ff6b6b; font-weight: 600;">❌ Error: ${error.message}</div>`;
+                console.error('Error saving club stats:', error);
+            }
         }
 
         async function loadLivestreams() {
