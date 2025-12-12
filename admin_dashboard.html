@@ -610,33 +610,132 @@
             font-size: 0.95em;
         }
 
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
+        /* ===== RESPONSIVE DESIGN ===== */
+        
+        /* MOBILE FIRST - Phones (320px - 480px) */
+        @media (max-width: 480px) {
+            /* Header */
             .admin-header {
                 flex-direction: column;
-                gap: 15px;
-                text-align: center;
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .admin-logo {
+                font-size: 1.2em;
+            }
+
+            .admin-badge {
+                font-size: 0.7em;
+                padding: 4px 8px;
             }
 
             .admin-info {
                 flex-direction: column;
                 width: 100%;
+                gap: 8px;
+            }
+
+            .admin-email {
+                font-size: 0.8em;
+            }
+
+            .logout-btn {
+                width: 100%;
+                padding: 10px 15px;
+                font-size: 0.8em;
+            }
+
+            /* Container */
+            .admin-container {
+                padding: 15px;
             }
 
             .admin-title {
+                font-size: 1.5em;
+                margin-bottom: 8px;
+            }
+
+            .admin-subtitle {
+                font-size: 0.9em;
+                margin-bottom: 20px;
+            }
+
+            /* Grid */
+            .admin-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .admin-card {
+                padding: 15px;
+                border-radius: 12px;
+            }
+
+            .card-icon {
                 font-size: 2em;
             }
 
-            .admin-container {
-                padding: 20px 15px;
+            .card-title {
+                font-size: 1em;
             }
 
-            .admin-grid {
-                grid-template-columns: 1fr;
+            .card-value {
+                font-size: 1.5em;
             }
 
+            .card-subtitle {
+                font-size: 0.75em;
+            }
+
+            /* Buttons */
             .admin-actions {
                 grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .action-btn {
+                padding: 10px 15px;
+                font-size: 0.85em;
+                border-radius: 8px;
+            }
+
+            /* Tables */
+            .admin-table {
+                font-size: 0.75em;
+            }
+
+            .admin-table th,
+            .admin-table td {
+                padding: 8px 5px;
+            }
+
+            /* Modal */
+            .modal-overlay {
+                padding: 10px;
+            }
+
+            .modal-content {
+                width: 100%;
+                max-width: 100%;
+                border-radius: 15px;
+                padding: 15px;
+            }
+
+            .modal-header {
+                font-size: 1.2em;
+                margin-bottom: 15px;
+            }
+
+            .form-group {
+                margin-bottom: 12px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 10px;
+                font-size: 0.9em;
             }
 
             .stats-grid {
@@ -645,16 +744,90 @@
 
             .watch-fee-tabs {
                 flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .watch-fee-tab {
+                padding: 8px 12px;
+                font-size: 0.8em;
+            }
+
+            /* Input Fields */
+            input, select, textarea {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+
+        /* TABLET - Small phones & tablets (481px - 768px) */
+        @media (max-width: 768px) {
+            .admin-header {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .admin-logo {
+                font-size: 1.5em;
+                flex: 1;
+                min-width: 200px;
+            }
+
+            .admin-info {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 10px;
+                width: auto;
+            }
+
+            .admin-title {
+                font-size: 2em;
+            }
+
+            .admin-subtitle {
+                font-size: 0.95em;
+            }
+
+            .admin-container {
+                padding: 20px;
+            }
+
+            .admin-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .admin-card {
+                padding: 20px;
+            }
+
+            .admin-actions {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .action-btn {
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .watch-fee-tabs {
+                flex-wrap: wrap;
+                gap: 10px;
             }
 
             #tournamentModal .watch-fee-content {
-                padding: 20px 15px;
+                padding: 20px;
             }
 
             #tournamentModal .watch-fee-header {
-                margin: -20px -15px 20px -15px;
-                padding-left: 15px;
-                padding-right: 15px;
+                padding: 15px;
             }
 
             #tournamentModal .watch-fee-title {
@@ -666,7 +839,118 @@
             }
 
             .watch-fee-modal {
-                padding: 10px;
+                padding: 15px;
+                width: 95%;
+            }
+
+            /* Table responsive */
+            .admin-table {
+                font-size: 0.85em;
+                overflow-x: auto;
+            }
+
+            .admin-table th,
+            .admin-table td {
+                padding: 10px 8px;
+            }
+
+            .modal-content {
+                width: 95%;
+                max-width: 500px;
+            }
+        }
+
+        /* MEDIUM DEVICES (769px - 1024px) */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .admin-container {
+                padding: 30px;
+            }
+
+            .admin-title {
+                font-size: 2.2em;
+            }
+
+            .admin-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .admin-actions {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .modal-content {
+                width: 90%;
+                max-width: 600px;
+            }
+        }
+
+        /* LANDSCAPE MODE - Phones in landscape */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .admin-header {
+                padding: 10px 15px;
+            }
+
+            .admin-title {
+                font-size: 1.5em;
+                margin-bottom: 5px;
+            }
+
+            .admin-subtitle {
+                font-size: 0.8em;
+                margin-bottom: 10px;
+            }
+
+            .admin-container {
+                padding: 10px 15px;
+            }
+
+            .modal-overlay {
+                overflow-y: auto;
+            }
+
+            .modal-content {
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+        }
+
+        /* IPHONE SPECIFIC - Notch and safe areas */
+        @supports (padding: max(0px)) {
+            body {
+                padding-left: max(0px, env(safe-area-inset-left));
+                padding-right: max(0px, env(safe-area-inset-right));
+            }
+
+            .admin-header {
+                padding-left: max(15px, env(safe-area-inset-left));
+                padding-right: max(15px, env(safe-area-inset-right));
+            }
+
+            .modal-content {
+                margin-left: max(0px, env(safe-area-inset-left));
+                margin-right: max(0px, env(safe-area-inset-right));
+            }
+        }
+
+        /* Touch-friendly sizes */
+        @media (hover: none) and (pointer: coarse) {
+            button, .action-btn, .logout-btn {
+                min-height: 44px;
+                min-width: 44px;
+                padding: 12px 16px;
+            }
+
+            input, select, textarea {
+                min-height: 44px;
+                padding: 12px;
+                font-size: 16px;
             }
         }
 
